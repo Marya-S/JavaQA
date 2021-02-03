@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SecondTest {
     protected static WebDriver driver;
-    private final Logger logger = LogManager.getLogger(FirstTest.class);
+    private final Logger logger = LogManager.getLogger(SecondTest.class);
     private final ServerConfig cfg = ConfigFactory.create(ServerConfig.class);
 
     @Before

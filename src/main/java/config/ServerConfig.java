@@ -12,4 +12,7 @@ public interface ServerConfig extends Config {
 
     @Key("url_tele2")
     String url_tele2();
+
+    @Key("volt")
+    String url_volt();
 }

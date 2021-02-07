@@ -47,6 +47,7 @@ public class thirdTest {
         wait.until(ExpectedConditions.presenceOfElementLocated((By.xpath("//h1[contains(text(),\"Электроинструменты\")]"))));
         WebElement perf = driver.findElement(By.cssSelector("a.box-block.divider.radius-3.mvspace-5.pspace-10.text-center[title=\"Перфораторы\"]"));
         wait.until(ExpectedConditions.elementToBeClickable(perf)).click();
+        deleteFrame();
         WebElement selector = driver.findElement(By.id("filterForm"));
         wait.until(ExpectedConditions.visibilityOf(selector));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selector);
@@ -64,8 +65,10 @@ public class thirdTest {
         String firstItemTitle = firstItem.getAttribute("title");
         String secondItemTitle = secondItem.getAttribute("title");
         addItemToCompare(firstItem);
+        deleteFrame();
         addItemToCompare(secondItem);
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("a[id=\"cCountCompare\"]"))).click();
+        deleteFrame();
         ArrayList<String> titleCompareItem = collectTitle();
         Assert.assertTrue(titleCompareItem.contains(firstItemTitle));
         Assert.assertTrue(titleCompareItem.contains(secondItemTitle));
@@ -73,21 +76,15 @@ public class thirdTest {
     }
 
     private void addItemToCompare(WebElement addElement) {
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
         StringBuffer compareSelector = new StringBuffer();
         compareSelector.append("//input[@id=\"compare-");
         compareSelector.append(getItemId(addElement));
         compareSelector.append("\"]/parent::span");
         driver.findElement(By.xpath(compareSelector.toString())).click();
-        try {
-            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.id("fl-431462")));
-            driver.findElement(By.cssSelector("button.close")).click();
-            driver.switchTo().defaultContent();
-        }
-        catch (Exception e){
-            logger.info("Не дождался фрейм с рекламой");
-        }
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("div.button.line.toCompare")))).click();
+        deleteFrame();
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector("div[role=\"dialog\"]"))));
+        wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector("div.button.line.toCompare >a")))).click();
     }
 
     private WebElement findFirst(List<WebElement> itemList, String name) {
@@ -121,4 +118,10 @@ public class thirdTest {
         return itemNameList;
     }
 
+    private void deleteFrame() {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("var iframes = document.querySelectorAll('iframe');" +
+                "for (var i = 0; i < iframes.length; i++) { " +
+                "iframes[i].parentNode.removeChild(iframes[i]);}");
+    }
 }

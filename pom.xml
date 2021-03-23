@@ -6,7 +6,11 @@
 
     <groupId>ru.otus</groupId>
     <artifactId>homeWorkProject</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>pageObjectProject</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>

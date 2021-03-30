@@ -34,7 +34,8 @@ public class HomePage {
     }
 
     public void enterInAccount(){
-        enterInAccount.click();
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.elementToBeClickable(enterInAccount)).click();
     }
 
 }
